@@ -1,0 +1,42 @@
+[
+  {
+    "name": "C.C. Arenales",
+    "description": "Este es un centro Otaku",
+    "discount": 20,
+    "address": "Av. Gral. Antonio Álvarez de Arenales",
+    "lat": -12.081848150833839,
+    "lng": -77.03551717031014
+  },
+  {
+    "name": "C.C. Risso",
+    "description": "Aquí puedes encontrar mucha comida",
+    "discount": 10,
+    "address": "Av. Arequipa 2250",
+    "lat": -12.08601400708629,
+    "lng": -77.0346844214146
+  },
+  {
+    "name": "Castillo Rospigliosi",
+    "description": "Castillo histórico, parte de la historia del Perú",
+    "discount": 30,
+    "address": "Manuel del Pino 448",
+    "lat": -12.07816579999339,
+    "lng": -77.03277508631773
+  },
+  {
+    "name": "Colegio Melitón Carbajal",
+    "description": "Emblemático",
+    "discount": 25,
+    "address": "José Bernardo Alcedo 883",
+    "lat": -12.08415015950456,
+    "lng": -77.02670012944108
+  },
+  {
+    "name": "El Farolito",
+    "description": "Autentica comida se la Sierra",
+    "discount": 50,
+    "address": "Av. Prol. Iquitos 1500",
+    "lat": -12.078845566409818,
+    "lng": -77.02896007405056
+  }
+]

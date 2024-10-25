@@ -1,0 +1,5 @@
+/Users/julioherrera/Library/Accounts
+/Users/julioherrera/Pictures/Photos Library.photoslibrary
+*.photoslibrary
+.DS_Store
+node_modules
