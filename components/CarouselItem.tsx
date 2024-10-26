@@ -8,8 +8,8 @@ export type CarouselItemProps = {
 
 const CarouselItem = (props: CarouselItemProps) => {
   return (
-    <View className="flex flex-col w-[300] h-[240] box-border px-2">
-      <View className="box-border w-full h-full p-[2] bg-neutral-400 rounded-[12] relative">
+    <View className="flex flex-col w-full h-[240] box-border px-4">
+      <View className="box-border w-full h-full rounded-[12] relative elevation-lg p-[2]">
         <Image
           className="w-full h-[120] block rounded-t-[12]"
           source={{

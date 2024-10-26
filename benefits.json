@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "name": "C.C. Arenales",
     "description": "Este es un centro Otaku",
     "discount": 20,
@@ -8,6 +9,7 @@
     "lng": -77.03551717031014
   },
   {
+    "id": 2,
     "name": "C.C. Risso",
     "description": "Aquí puedes encontrar mucha comida",
     "discount": 10,
@@ -16,6 +18,7 @@
     "lng": -77.0346844214146
   },
   {
+    "id": 3,
     "name": "Castillo Rospigliosi",
     "description": "Castillo histórico, parte de la historia del Perú",
     "discount": 30,
@@ -24,6 +27,7 @@
     "lng": -77.03277508631773
   },
   {
+    "id": 4,
     "name": "Colegio Melitón Carbajal",
     "description": "Emblemático",
     "discount": 25,
@@ -32,6 +36,7 @@
     "lng": -77.02670012944108
   },
   {
+    "id": 5,
     "name": "El Farolito",
     "description": "Autentica comida se la Sierra",
     "discount": 50,

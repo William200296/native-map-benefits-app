@@ -3,7 +3,6 @@ package com.jherrerab2024.nativemapbenefitsapp.map
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
@@ -15,8 +14,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 
-class MapModule(private val reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
+class MapModule(private val reactContext: ReactApplicationContext): ReactContextBaseJavaModule(reactContext) {
 
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(reactContext)
@@ -41,7 +39,6 @@ class MapModule(private val reactContext: ReactApplicationContext) :
 
         val locationTask: Task<Location?> = fusedLocationClient.lastLocation
         locationTask.addOnSuccessListener(reactContext.currentActivity!!) { location ->
-            Log.d("LOCATION VALUE: ", location.toString())
             if (location != null) {
                 val locationArray: WritableArray = Arguments.createArray()
                 locationArray.pushDouble(location.latitude)

@@ -2,13 +2,14 @@ package com.jherrerab2024.nativemapbenefitsapp.map
 
 import android.util.Log
 import com.facebook.react.bridge.Arguments
+import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.common.MapBuilder
+import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
-import com.facebook.react.uimanager.events.RCTEventEmitter
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+
 
 class MapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener {
@@ -49,19 +51,24 @@ class MapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback,
     }
 
     private fun setMarkers(currentLat: Double, currentLng: Double, stores: ReadableArray) {
+        val location = "Ubicación Actual"
         googleMap?.let { map ->
             map.clear()
 
             val currentLocation = LatLng(currentLat, currentLng)
             val currentMarker =
-                map.addMarker(MarkerOptions().position(currentLocation).title("Ubicación Actual"))
+                map.addMarker(
+                    MarkerOptions()
+                        .position(currentLocation)
+                        .title(location)
+                )
             currentMarker?.tag = reactContext
 
             for (i in 0 until stores.size()) {
                 val store: ReadableMap = stores.getMap(i)
                 val storeLat = store.getDouble("lat")
                 val storeLng = store.getDouble("lng")
-                val storeName = store.getString("name") ?: "Tienda"
+                val storeName = store.getString("name")
 
                 val storeLocation = LatLng(storeLat, storeLng)
                 val storeMarker =
@@ -74,26 +81,26 @@ class MapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback,
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        Log.d("MapViewManager", "Marker clicked: ${marker.title}")
         val event: WritableMap = Arguments.createMap()
+        val reactContext = marker.tag as? ThemedReactContext
+
         event.putString("title", marker.title)
         event.putDouble("latitude", marker.position.latitude)
         event.putDouble("longitude", marker.position.longitude)
 
-        val reactContext = marker.tag as? ThemedReactContext
-
         if (reactContext != null) {
-            Log.d("reactContext", reactContext.toString())
-            Log.d("HAS CODE 1", marker.hashCode().toString())
-            reactContext
-                .getJSModule(RCTEventEmitter::class.java)
-                .receiveEvent(marker.hashCode(), "onMarkerPress", event)
-            Log.d("HAS CODE 2", marker.hashCode().toString())
+            sendEvent(reactContext, "onMarkerPress", event)
         } else {
-            Log.e("MapViewManager", "ReactContext no encontrado en marker.tag")
+            Log.e("MapViewManager", "ReactContext doest not exist in <marker.tag> Object")
         }
 
         return false
+    }
+
+    private fun sendEvent(reactContext: ReactContext, eventName: String, params: WritableMap?) {
+        reactContext
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+            .emit(eventName, params)
     }
 
     override fun getCommandsMap(): Map<String, Int> {
@@ -103,6 +110,7 @@ class MapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback,
         )
     }
 
+    @Deprecated("Deprecated in Java")
     override fun receiveCommand(view: MapView, commandId: Int, args: ReadableArray?) {
         when (commandId) {
             COMMAND_SET_LOCATION -> {
@@ -122,12 +130,6 @@ class MapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback,
                 }
             }
         }
-    }
-
-    override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
-        return MapBuilder.of(
-            "onMarkerPress", MapBuilder.of("registrationName", "onMarkerPress")
-        )
     }
 
     override fun onDropViewInstance(view: MapView) {

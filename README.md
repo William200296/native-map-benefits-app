@@ -15,4 +15,5 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    ```bash
     npm run android
    ```
-   
+  const latitude = -12.082397011861229;
+  const longitude = -77.03107054634789;   
