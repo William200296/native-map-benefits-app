@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BenefitCarousel, MapMarketView, Title } from "@/components";
 import { BenefitDetail, BenefitMarker } from "@/interfaces";
 import { getBenefits } from "@/services";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 export default function Index() {
@@ -22,7 +23,6 @@ export default function Index() {
   };
 
   const handleMarkerPress = (event: BenefitMarker): void => {
-    const { latitude, longitude, title } = event;
     setSelectedMarker(event);
   };
 

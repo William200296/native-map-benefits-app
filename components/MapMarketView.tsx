@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from "react";
 import {
   findNodeHandle,
@@ -53,7 +54,7 @@ const MapMarketView = ({ benefits, handleMarkerPress }: MapMarketViewProps) => {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        requestPermissionData
+        requestPermissionData,
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         fetchLocation();
