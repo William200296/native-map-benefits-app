@@ -17,6 +17,8 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolygonOptions
+import kotlin.math.atan2
 
 
 class MapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback,
@@ -54,14 +56,13 @@ class MapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback,
         val location = "Ubicación Actual"
         googleMap?.let { map ->
             map.clear()
-
+            val markerPositions = mutableListOf<LatLng>()
             val currentLocation = LatLng(currentLat, currentLng)
-            val currentMarker =
-                map.addMarker(
-                    MarkerOptions()
-                        .position(currentLocation)
-                        .title(location)
-                )
+            val currentMarker = map.addMarker(
+                MarkerOptions()
+                    .position(currentLocation)
+                    .title(location)
+            )
             currentMarker?.tag = reactContext
 
             for (i in 0 until stores.size()) {
@@ -71,12 +72,38 @@ class MapViewManager : SimpleViewManager<MapView>(), OnMapReadyCallback,
                 val storeName = store.getString("name")
 
                 val storeLocation = LatLng(storeLat, storeLng)
-                val storeMarker =
-                    map.addMarker(MarkerOptions().position(storeLocation).title(storeName))
+                val storeMarker = map.addMarker(
+                    MarkerOptions()
+                        .position(storeLocation)
+                        .title(storeName)
+                )
                 storeMarker?.tag = reactContext
+                markerPositions.add(storeLocation)
             }
 
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
+
+            if (markerPositions.size >= 3) {
+                val centroid = LatLng(
+                    markerPositions.map { it.latitude }.average(),
+                    markerPositions.map { it.longitude }.average()
+                )
+
+                val sortedPositions = markerPositions.sortedBy { position ->
+                    atan2(
+                        position.longitude - centroid.longitude,
+                        position.latitude - centroid.latitude
+                    )
+                }
+
+                val polygonOptions = PolygonOptions()
+                    .addAll(sortedPositions)
+                    .strokeColor(0xFF72C8C1.toInt())
+                    .fillColor(0x5072C8C1)
+                    .strokeWidth(3f)
+
+                map.addPolygon(polygonOptions)
+            }
         }
     }
 

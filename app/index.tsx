@@ -17,15 +17,12 @@ export default function Index() {
         setBenefits((response.data as BenefitDetail[]) || []);
       })
       .catch((e) => {
-        console.log("(E): ", e);
+        console.warn("SERVICE_ERROR: ", e);
       });
   };
 
   const handleMarkerPress = (event: BenefitMarker): void => {
     const { latitude, longitude, title } = event;
-    console.log(
-      `Marcador presionado: ${title}, Lat: ${latitude}, Lng: ${longitude}`
-    );
     setSelectedMarker(event);
   };
 
@@ -38,7 +35,6 @@ export default function Index() {
       const foundBenefit: BenefitDetail | undefined = benefits.find(
         (benefit: BenefitDetail) => benefit.name === selectedMarker.title
       );
-      console.log('FOUND: ',foundBenefit);
       if (foundBenefit) {
         setSelectedIndex(foundBenefit.id);
       }
